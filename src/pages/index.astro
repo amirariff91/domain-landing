@@ -1,0 +1,43 @@
+---
+import "../styles/global.css";
+import { domains } from "../data/domains";
+---
+
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domain Portfolio — Premium Malaysian Domains for Sale</title>
+  <meta name="description" content="Premium Malaysian domain names for sale. Established .my and .com.my domains for news, education, tourism and finance industries." />
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-10">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Domain Portfolio Malaysia</h1>
+      <p class="text-gray-500">Premium .my domain names available for sale</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {domains.map(d => (
+        <a
+          href={`/${d.slug}/`}
+          class="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md transition-all hover:border-gray-300"
+        >
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-2xl">{d.emoji}</span>
+            <div>
+              <p class="font-bold text-gray-900">{d.domain}</p>
+              <p class="text-xs text-gray-400">{d.niche}</p>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600">{d.tagline}</p>
+          <p class="text-xs text-blue-600 mt-2 font-medium">View listing →</p>
+        </a>
+      ))}
+    </div>
+    <p class="text-center text-sm text-gray-400 mt-8">
+      Contact: <a href="mailto:amirariff91@gmail.com" class="text-blue-600">amirariff91@gmail.com</a>
+    </p>
+  </div>
+</body>
+</html>

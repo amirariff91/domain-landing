@@ -1,0 +1,168 @@
+---
+import "../styles/global.css";
+import { domains } from "../data/domains";
+
+export function getStaticPaths() {
+  return domains.map(d => ({
+    params: { slug: d.slug },
+    props: { domain: d },
+  }));
+}
+
+const { domain: d } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{d.brandName} — {d.tagline} | Domain untuk Dijual</title>
+  <meta name="description" content={`${d.domain} — ${d.description} Hubungi ${d.contactEmail} untuk pertanyaan harga.`} />
+  <meta property="og:title" content={`${d.domain} — Domain untuk Dijual`} />
+  <meta property="og:description" content={d.description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    :root {
+      --primary: {d.primaryColor};
+      --dark: {d.darkColor};
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f9fafb; }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section style={`background: linear-gradient(135deg, ${d.primaryColor} 0%, ${d.darkColor} 100%);`} class="min-h-screen flex flex-col">
+    
+    <!-- Nav -->
+    <nav class="max-w-5xl mx-auto w-full px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-3xl">{d.emoji}</span>
+        <div>
+          <p class="text-white font-bold text-xl leading-none">{d.brandName}</p>
+          <p class="text-white/60 text-xs">{d.nicheMalay}</p>
+        </div>
+      </div>
+      <a
+        href={`mailto:${d.contactEmail}?subject=Pertanyaan Domain ${d.domain}`}
+        style={`background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);`}
+        class="text-white font-semibold px-5 py-2 rounded-xl text-sm hover:bg-white/25 transition-all"
+      >
+        Hubungi Kami
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex items-center">
+      <div class="max-w-5xl mx-auto w-full px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <!-- Left: Domain Info -->
+          <div>
+            <!-- For Sale Badge -->
+            <div class="inline-flex items-center gap-2 bg-white/20 border border-white/30 rounded-full px-4 py-1.5 text-sm text-white font-medium mb-6">
+              <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+              Domain ini untuk dijual / This domain is for sale
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+              {d.domain}
+            </h1>
+
+            <p class="text-white/70 text-xl mb-4">{d.brandName}</p>
+            <p class="text-white/85 text-lg mb-8 leading-relaxed">{d.taglineMalay}</p>
+
+            <div class="flex flex-wrap gap-3">
+              <a
+                href={`mailto:${d.contactEmail}?subject=Pertanyaan Harga Domain ${d.domain}&body=Assalamualaikum,%0A%0ASaya berminat untuk membeli domain ${d.domain}.%0A%0ASila berikan maklumat harga dan syarat pemindahan domain.%0A%0ATerima kasih.`}
+                style={`background: white; color: ${d.primaryColor};`}
+                class="inline-flex items-center gap-2 font-bold px-7 py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-lg text-base"
+              >
+                📧 Tanya Harga
+              </a>
+              <a
+                href={`https://api.whatsapp.com/send?phone=60139844412&text=${encodeURIComponent('Salam, saya berminat dengan domain ' + d.domain + '. Boleh saya tahu harganya?')}`}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold px-7 py-3.5 rounded-xl transition-colors shadow-lg text-base"
+              >
+                💬 WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Domain Card -->
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div class="text-center mb-6">
+              <span class="text-6xl">{d.icon}</span>
+              <h2 class="text-2xl font-bold text-white mt-3 mb-1">{d.brandName}</h2>
+              <p class="text-white/60 text-sm">{d.niche}</p>
+            </div>
+            
+            <div class="space-y-3">
+              {d.features.map((feature: string) => (
+                <div class="flex items-start gap-3 bg-white/10 rounded-xl px-4 py-3">
+                  <span class="text-green-300 mt-0.5 flex-shrink-0">✓</span>
+                  <span class="text-white/85 text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-5 pt-5 border-t border-white/20">
+              <p class="text-white/50 text-xs text-center">Untuk pertanyaan harga & pemindahan:</p>
+              <p class="text-white font-semibold text-center mt-1 text-sm">{d.contactEmail}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Strip -->
+    <div class="bg-black/20 border-t border-white/10 py-4">
+      <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-white/50 text-xs">
+        <p>© 2025 {d.domain} — Domain Portfolio Malaysia</p>
+        <p>Hubungi: <a href={`mailto:${d.contactEmail}`} class="text-white/70 hover:text-white transition-colors">{d.contactEmail}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section style={`background: white;`} class="py-12">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">Kenapa Domain Ini Bernilai?</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+        {[
+          { icon: '🇲🇾', title: 'Domain .my Rasmi', desc: `Domain ${d.domain} adalah domain Malaysia yang sah, boleh dipercayai dan diiktiraf.` },
+          { icon: '🔒', title: 'Brand Yang Kuat', desc: `Nama "${d.brandName}" mudah diingati, profesional dan sesuai untuk ${d.nicheMalay}.` },
+          { icon: '📈', title: 'Potensi Tinggi', desc: `Pasaran ${d.niche} di Malaysia sedang berkembang pesat dengan digitalisasi ekonomi.` },
+        ].map((item: {icon: string, title: string, desc: string}) => (
+          <div class="text-center p-5 bg-gray-50 rounded-2xl border border-gray-100">
+            <div class="text-3xl mb-3">{item.icon}</div>
+            <h3 class="font-bold text-gray-900 mb-2">{item.title}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="bg-gray-900 rounded-2xl p-6 text-center">
+        <p class="text-gray-300 text-lg mb-2">Berminat dengan domain ini?</p>
+        <p class="text-white font-bold text-2xl mb-4">{d.domain}</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a
+            href={`mailto:${d.contactEmail}?subject=Domain ${d.domain} - Pertanyaan Pembelian`}
+            style={`background: ${d.primaryColor};`}
+            class="inline-flex items-center gap-2 text-white font-bold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity"
+          >
+            📧 Email: {d.contactEmail}
+          </a>
+        </div>
+        <p class="text-gray-500 text-sm mt-4">Kami akan membalas dalam masa 24 jam.</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
